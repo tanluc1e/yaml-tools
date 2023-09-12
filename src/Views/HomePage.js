@@ -1,8 +1,12 @@
 import TextEditor from "./TextEditor";
+import YamlChecker from "./YamlChecker";
+import { useState } from "react";
 
 export default function HomePage() {
+  const [selectedView, setSelectedView] = useState("translator");
   const allElements = document.querySelectorAll("*:not([theme-button])");
   const themeButtons = document.querySelectorAll("[theme-button]");
+
   const escapeRegExp = (string) =>
     string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const replaceAll = (str, term, replacement) =>
@@ -29,6 +33,11 @@ export default function HomePage() {
       console.log("btn clicked" + e.target.getAttribute("theme-button"));
     });
   });
+
+  const handleViewChange = (view) => {
+    setSelectedView(view);
+  };
+
   return (
     <>
       <div className="fixed right-0 bottom-0 m-6 p-2 bg-white inline-flex items-center rounded-full z-10">
@@ -249,18 +258,49 @@ export default function HomePage() {
             </div>
           </div>
           <div className="flex justify-center border-t border-gray-700 py-5">
-            <a href="/" className="text-white mx-5">
-              Translator
-            </a>
-            <a href="/" className="text-gray-600 mx-5 hover:text-gray-500">
-              not available
-            </a>
+            {/* Translator select */}
+            {selectedView === "translator" ? (
+              <button
+                href="/"
+                className="text-white mx-5"
+                onClick={() => handleViewChange("translator")}
+              >
+                Translator
+              </button>
+            ) : (
+              <button
+                href="/"
+                className="text-gray-600 mx-5 hover:text-gray-500"
+                onClick={() => handleViewChange("translator")}
+              >
+                Translator
+              </button>
+            )}
+            {/* Checker select */}
+            {selectedView === "yamlChecker" ? (
+              <button
+                href="/"
+                className="text-white mx-5"
+                onClick={() => handleViewChange("yamlChecker")}
+              >
+                Checker
+              </button>
+            ) : (
+              <button
+                href="/"
+                className="text-gray-600 mx-5 hover:text-gray-500"
+                onClick={() => handleViewChange("yamlChecker")}
+              >
+                Checker
+              </button>
+            )}
             <a href="/" className="text-gray-600 mx-5 hover:text-gray-500">
               not available
             </a>
           </div>
         </div>
-        <TextEditor />
+        {selectedView === "translator" && <TextEditor />}
+        {selectedView === "yamlChecker" && <YamlChecker />}
         <div className="bg-gray-800 pt-12 pb-6 flex-1">
           <div className="container mx-auto">
             <div className="text-center">
